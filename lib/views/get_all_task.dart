@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sec8_backend/model/task.dart';
 import 'package:flutter_sec8_backend/services/task.dart';
 import 'package:flutter_sec8_backend/views/create_task.dart';
+import 'package:flutter_sec8_backend/views/get_all_favorite.dart';
 import 'package:flutter_sec8_backend/views/get_completed_task.dart';
 import 'package:flutter_sec8_backend/views/get_inCompleted_task.dart';
 import 'package:flutter_sec8_backend/views/update_task.dart';
@@ -22,6 +23,9 @@ class GetAllTask extends StatelessWidget {
           IconButton(onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (context)=>GetInCompletedTaskTask()));
           }, icon: Icon(Icons.incomplete_circle)),
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>GetFavoriteTask()));
+          }, icon: Icon(Icons.favorite)),
         ],
       ),
       floatingActionButton: FloatingActionButton(onPressed: (){
@@ -42,6 +46,18 @@ class GetAllTask extends StatelessWidget {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      IconButton(onPressed: ()async{
+                        if(taskList[index].favorite!.contains("1")){
+                          await TaskService().removeFromFavorite(
+                              userID: "1",
+                              taskID: taskList[index].docId.toString());
+                        }
+                        else{
+                          TaskService().addToFavorite(
+                              userID: "1",
+                              taskID: taskList[index].docId.toString());
+                        }
+                      }, icon: Icon(taskList[index].favorite!.contains("1") ? Icons.favorite : Icons.favorite_border)),
                       Checkbox(
                           value: taskList[index].isCompleted,
                           onChanged: (val)async{
