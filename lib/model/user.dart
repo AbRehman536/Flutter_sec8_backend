@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-class UserModel {
+class UserModel{
   final String? docId;
   final String? name;
   final String? email;
